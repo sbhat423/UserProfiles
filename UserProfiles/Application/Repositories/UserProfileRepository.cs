@@ -45,5 +45,10 @@ namespace UserProfiles.Application.Repositories
             var response = await _container.ReadItemAsync<UserProfileModel>(id, PartitionKey.None);
             return response.Resource;
         }
+
+        public async Task<UserProfileModel> Update(string id, UserProfileModel userProfile)
+        {
+            return await _container.ReplaceItemAsync<UserProfileModel>(userProfile, id);
+        }
     }
 }

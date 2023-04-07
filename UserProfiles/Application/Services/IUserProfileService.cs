@@ -7,5 +7,6 @@ namespace UserProfiles.Application.Services
     {
         Task<UserProfileModel> GetById(string id);
         Task Create(UserProfileModel userProfile);
+        Task Delete(string id);
     }
 }

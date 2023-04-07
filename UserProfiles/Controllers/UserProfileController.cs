@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos;
 using UserProfiles.Application.Services;
 using UserProfiles.Models;
 
@@ -45,6 +44,20 @@ namespace UserProfiles.Controllers
                 throw;
             }
             return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                await _userProfileService.Delete(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return NoContent();
         }
     }
 }

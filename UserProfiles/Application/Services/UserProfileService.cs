@@ -22,5 +22,17 @@ namespace UserProfiles.Application.Services
         {
             return await _userProfileRepository.GetItemById(id);
         }
+
+        public async Task Delete(string id)
+        {
+            var userProfile = await _userProfileRepository.GetItemById(id);
+            if (userProfile == null)
+            {
+                throw new ArgumentException($"User profile with given Id: {id} not found");
+            }
+
+            userProfile.IsActive = false;
+            await _userProfileRepository.Update(id, userProfile);
+        }
     }
 }

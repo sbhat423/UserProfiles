@@ -10,5 +10,6 @@ namespace UserProfiles.Models
         public string LastName { get; set; }
         public string Bio { get; set; }
         public string ProfilePicLink { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }
