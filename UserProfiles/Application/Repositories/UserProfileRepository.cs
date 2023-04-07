@@ -5,8 +5,8 @@ namespace UserProfiles.Application.Repositories
 {
     public class UserProfileRepository : IUserProfileRepository
     {
-        public string DatabaseId => Constants.CosmosDbOptions.Database;
-        public string ContainerId => Constants.CosmosDbOptions.ContainerId;
+        public string DatabaseId => Constants.CosmosDBOptions.Database;
+        public string ContainerId => Constants.CosmosDBOptions.ContainerId;
 
         private readonly CosmosClient _cosmosClient;
         private Database _database;
@@ -23,9 +23,26 @@ namespace UserProfiles.Application.Repositories
             _container = await _database.CreateContainerIfNotExistsAsync(containerProperties);
         }
 
-        public async Task<UserProfileModel> GetItemById(string id, PartitionKey partitionKey)
+        public async Task EnsureDatabaseExists(ThroughputProperties throughputProperties)
         {
-            var response = await _container.ReadItemAsync<UserProfileModel>(id, partitionKey);
+            var response = await _cosmosClient.CreateDatabaseIfNotExistsAsync(DatabaseId, throughputProperties);
+            _database = response.Database;
+        }
+
+        public async Task EnsureContainerExists(ContainerProperties containerProperties ,ThroughputProperties throughputProperties)
+        {
+            var response = await _database.CreateContainerIfNotExistsAsync(containerProperties, throughputProperties);
+            _container = response.Container;
+        }
+
+        public async Task Create(UserProfileModel userProfile)
+        {
+            await _container.CreateItemAsync<UserProfileModel>(userProfile, PartitionKey.None);
+        }
+
+        public async Task<UserProfileModel> GetItemById(string id)
+        {
+            var response = await _container.ReadItemAsync<UserProfileModel>(id, PartitionKey.None);
             return response.Resource;
         }
     }

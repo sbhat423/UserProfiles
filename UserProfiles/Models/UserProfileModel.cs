@@ -1,7 +1,10 @@
-﻿namespace UserProfiles.Models
+﻿using Newtonsoft.Json;
+
+namespace UserProfiles.Models
 {
     public class UserProfileModel
     {
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

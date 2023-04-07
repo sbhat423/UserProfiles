@@ -13,9 +13,14 @@ namespace UserProfiles.Application.Services
             _userProfileRepository = userProfileRepository;
         }
 
-        public Task<UserProfileModel> GetById(string id, PartitionKey partitionKey)
+        public async Task Create(UserProfileModel userProfile)
         {
-            return _userProfileRepository.GetItemById(id, partitionKey);
+            await _userProfileRepository.Create(userProfile);
+        }
+
+        public async Task<UserProfileModel> GetById(string id)
+        {
+            return await _userProfileRepository.GetItemById(id);
         }
     }
 }

@@ -5,6 +5,10 @@ namespace UserProfiles.Application.Repositories
 {
     public interface IUserProfileRepository
     {
-        Task<UserProfileModel> GetItemById(string id, PartitionKey partitionKey);
+
+        Task Create(UserProfileModel userProfile);
+        Task EnsureContainerExists(ContainerProperties containerProperties, ThroughputProperties throughputProperties);
+        Task EnsureDatabaseExists(ThroughputProperties throughputProperties);
+        Task<UserProfileModel> GetItemById(string id);
     }
 }

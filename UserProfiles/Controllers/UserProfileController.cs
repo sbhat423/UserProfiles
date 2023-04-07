@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using UserProfiles.Application.Services;
+using UserProfiles.Models;
 
 namespace UserProfiles.Controllers
 {
@@ -27,8 +28,23 @@ namespace UserProfiles.Controllers
                 throw new ArgumentNullException("id");
             }
 
-            var result = await _userProfileService.GetById(id, new PartitionKey());
+            var result = await _userProfileService.GetById(id);
             return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] UserProfileModel userProfile)
+        {
+            try
+            {
+                userProfile.Id = userProfile.Id ?? Guid.NewGuid().ToString();
+                await _userProfileService.Create(userProfile);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return Ok();
         }
     }
 }

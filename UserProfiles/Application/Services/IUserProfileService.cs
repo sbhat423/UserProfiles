@@ -5,6 +5,7 @@ namespace UserProfiles.Application.Services
 {
     public interface IUserProfileService
     {
-        Task<UserProfileModel> GetById(string id, PartitionKey partitionKey);
+        Task<UserProfileModel> GetById(string id);
+        Task Create(UserProfileModel userProfile);
     }
 }

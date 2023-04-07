@@ -5,8 +5,8 @@ using UserProfiles.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
-// Add services to the container.
 
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddSingleton(new CosmosClient(configuration.GetConnectionString(Constants.ConnetionStrings.CosmosDbConnectionString)));
 builder.Services.AddSingleton<IUserProfileRepository, UserProfileRepository>();
@@ -15,6 +15,7 @@ builder.Services.AddTransient<IUserProfileService, UserProfileService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCosmosDB(configuration);
 
 app.UseHttpsRedirection();
 
