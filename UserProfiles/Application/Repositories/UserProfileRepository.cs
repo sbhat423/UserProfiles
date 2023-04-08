@@ -65,7 +65,22 @@ namespace UserProfiles.Application.Repositories
 
         public async Task<UserProfileModel> Update(string id, UserProfileModel userProfile)
         {
-            return await _container.ReplaceItemAsync<UserProfileModel>(userProfile, id);
+            if ((userProfile.Id != null) && (userProfile.Id != id))
+            {
+                throw new ArgumentException("Id provided for the update operation doesnot matches with the Id of the user profile");
+            }
+
+            var originalUserProfile = await GetItemById(id);
+            if (originalUserProfile == null)
+            {
+                throw new ArgumentNullException($"User profile for the given id: {id} not found");
+            }
+
+            originalUserProfile.FirstName = userProfile.FirstName ?? originalUserProfile.FirstName;
+            originalUserProfile.LastName = userProfile.LastName ?? originalUserProfile.LastName;
+            originalUserProfile.Bio = userProfile.Bio ?? originalUserProfile.Bio;
+
+            return await _container.ReplaceItemAsync<UserProfileModel>(originalUserProfile, id);
         }
     }
 }

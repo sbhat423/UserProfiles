@@ -47,5 +47,10 @@ namespace UserProfiles.Application.Services
             userProfile.IsActive = false;
             await _userProfileRepository.Update(id, userProfile);
         }
+
+        public async Task<UserProfileModel> Update(string id, UserProfileModel userProfile)
+        {
+            return await _userProfileRepository.Update(id, userProfile);
+        }
     }
 }

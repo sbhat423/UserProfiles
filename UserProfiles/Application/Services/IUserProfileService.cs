@@ -9,5 +9,6 @@ namespace UserProfiles.Application.Services
         Task Create(UserProfileModel userProfile);
         Task Delete(string id);
         Task<IEnumerable<UserProfileModel>> GetUserProfiles(int page, int size);
+        Task<UserProfileModel> Update(string id, UserProfileModel userProfile);
     }
 }

@@ -52,7 +52,7 @@ namespace UserProfiles.Controllers
         {
             try
             {
-                userProfile.Id = userProfile.Id ?? Guid.NewGuid().ToString();
+                userProfile.Id ??= Guid.NewGuid().ToString();
                 await _userProfileService.Create(userProfile);
             }
             catch (Exception)
@@ -62,18 +62,33 @@ namespace UserProfiles.Controllers
             return Ok();
         }
 
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UserProfileModel userProfile)
+        {
+            try
+            {
+                var result = await _userProfileService.Update(id, userProfile);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             try
             {
                 await _userProfileService.Delete(id);
+                return NoContent();
             }
             catch (Exception)
             {
                 throw;
             }
-            return NoContent();
         }
     }
 }
