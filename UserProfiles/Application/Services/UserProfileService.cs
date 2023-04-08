@@ -23,6 +23,19 @@ namespace UserProfiles.Application.Services
             return await _userProfileRepository.GetItemById(id);
         }
 
+        public async Task<IEnumerable<UserProfileModel>> GetUserProfiles(int page, int size)
+        {
+            var query = @$"
+                SELECT * FROM c 
+                WHERE c.IsActive = true
+                ORDER BY c._ts DESC
+                OFFSET {(page - 1) * size}
+                LIMIT {size}";
+
+            var queryDefinition = new QueryDefinition(query);
+            return await _userProfileRepository.GetItems(queryDefinition);
+        }
+
         public async Task Delete(string id)
         {
             var userProfile = await _userProfileRepository.GetItemById(id);

@@ -31,6 +31,22 @@ namespace UserProfiles.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int size = 10)
+        {
+            if (page == 0)
+            {
+                throw new ArgumentNullException("Value of page is invalid");
+            }
+            if (size == 0)
+            {
+                throw new ArgumentNullException("Value of size is invalid");
+            }
+
+            var result = await _userProfileService.GetUserProfiles(page, size);
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserProfileModel userProfile)
         {

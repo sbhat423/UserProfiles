@@ -1,4 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
+using System.Linq.Expressions;
 using UserProfiles.Models;
 
 namespace UserProfiles.Application.Repositories
@@ -44,6 +46,21 @@ namespace UserProfiles.Application.Repositories
         {
             var response = await _container.ReadItemAsync<UserProfileModel>(id, PartitionKey.None);
             return response.Resource;
+        }
+
+        public async Task<IEnumerable<UserProfileModel>> GetItems(
+            QueryDefinition query, 
+            string continuationToken = default,
+            QueryRequestOptions queryRequestOptions = null)
+        {
+            FeedIterator<UserProfileModel> feedIterator = _container.GetItemQueryIterator<UserProfileModel>(query, continuationToken, queryRequestOptions);
+            List<UserProfileModel> userProfiles = new List<UserProfileModel>();
+            while (feedIterator.HasMoreResults)
+            {
+                userProfiles.AddRange(await feedIterator.ReadNextAsync());
+            }
+
+            return userProfiles;
         }
 
         public async Task<UserProfileModel> Update(string id, UserProfileModel userProfile)

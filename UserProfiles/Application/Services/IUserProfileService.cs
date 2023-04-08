@@ -8,5 +8,6 @@ namespace UserProfiles.Application.Services
         Task<UserProfileModel> GetById(string id);
         Task Create(UserProfileModel userProfile);
         Task Delete(string id);
+        Task<IEnumerable<UserProfileModel>> GetUserProfiles(int page, int size);
     }
 }
