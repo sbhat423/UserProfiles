@@ -1,6 +1,4 @@
 ﻿using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Linq;
-using System.Linq.Expressions;
 using UserProfiles.Models;
 
 namespace UserProfiles.Application.Repositories
@@ -31,7 +29,7 @@ namespace UserProfiles.Application.Repositories
             _database = response.Database;
         }
 
-        public async Task EnsureContainerExists(ContainerProperties containerProperties ,ThroughputProperties throughputProperties)
+        public async Task EnsureContainerExists(ContainerProperties containerProperties, ThroughputProperties throughputProperties)
         {
             var response = await _database.CreateContainerIfNotExistsAsync(containerProperties, throughputProperties);
             _container = response.Container;
@@ -49,7 +47,7 @@ namespace UserProfiles.Application.Repositories
         }
 
         public async Task<IEnumerable<UserProfileModel>> GetItems(
-            QueryDefinition query, 
+            QueryDefinition query,
             string continuationToken = default,
             QueryRequestOptions queryRequestOptions = null)
         {
