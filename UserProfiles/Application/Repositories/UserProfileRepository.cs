@@ -78,7 +78,8 @@ namespace UserProfiles.Application.Repositories
 
             originalUserProfile.FirstName = userProfile.FirstName ?? originalUserProfile.FirstName;
             originalUserProfile.LastName = userProfile.LastName ?? originalUserProfile.LastName;
-            originalUserProfile.Bio = userProfile.Bio ?? originalUserProfile.Bio;
+            originalUserProfile.Email = userProfile.Email ?? originalUserProfile.Email;
+            originalUserProfile.PhoneNumber = userProfile.PhoneNumber ?? originalUserProfile.PhoneNumber;
 
             return await _container.ReplaceItemAsync<UserProfileModel>(originalUserProfile, id);
         }
